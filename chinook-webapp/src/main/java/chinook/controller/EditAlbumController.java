@@ -86,6 +86,9 @@ public class EditAlbumController implements Serializable {
 	}
 	
 	public String cancel() {
+		currentAlbum = null;
+		albumId = 0;
+		selectedArtistId = 0;
 		return "/public/viewAlbums?faces-redirect=true";
 	}
 

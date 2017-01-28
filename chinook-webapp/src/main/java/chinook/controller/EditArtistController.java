@@ -62,6 +62,8 @@ public class EditArtistController implements Serializable {
 	}
 	
 	public String cancel() {
+		currentArtist = null;
+		artistId = 0;
 		return "/public/viewArtists?faces-redirect=true";
 	}
 
