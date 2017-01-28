@@ -1,0 +1,89 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:p="http://primefaces.org/ui"  
+	xmlns:b="http://bootsfaces.net/ui"
+	template="/WEB-INF/templates/template-chinook.xhtml">
+	
+	<ui:param name="title" value="Chinook - Edit Album" />
+
+	<ui:define name="maincontent">
+		<f:metadata>
+			<f:viewParam name="albumId" value="#{editAlbumController.albumId}" />
+			<f:event listener="#{editAlbumController.findAlbumById}" type="preRenderView" />
+		</f:metadata>
+		
+		<b:jumbotron>
+			<h1>Edit Album Details</h1>
+		</b:jumbotron>
+				
+		<b:messages id="messages" />				
+		
+		<b:modal id="confirmDialog" title="Delete Confirmation" styleClass="modalPseudoClass">						
+			<p>Are you sure you want to delete this item?</p>
+			<f:facet name="footer">
+				<h:form>
+					<b:commandButton value="Yes, I am sure" 
+						look="danger"				
+						immediate="true" 					
+						action="#{editAlbumController.removeAlbum()}">
+					</b:commandButton>
+					<b:button value="No" dismiss="modal" onclick="return false;" />					
+				</h:form>
+			</f:facet>
+		</b:modal>
+				
+		<b:panel title="Album Details" 
+			rendered="#{not empty editAlbumController.currentAlbum}"
+			collapsible="false">
+
+			<h:form>
+
+				<b:inputText id="albumId" 
+					label="Album ID"
+					readonly="true"
+					value="#{editAlbumController.currentAlbum.albumId}">
+				</b:inputText>
+				
+				<b:inputText id="title" 
+					label="Album Title"
+					value="#{editAlbumController.currentAlbum.title}">
+					<b:focus />
+				</b:inputText>
+				
+				<b:selectOneMenu id="artists" value="#{editAlbumController.selectedArtistId}">
+					<f:selectItem itemLabel="--- select the artist ---" itemValue="0"/>
+					<f:selectItems value="#{editAlbumController.artists}" var="artist" 
+						itemLabel="#{artist.name}" 
+						itemValue="#{artist.artistId}" />
+				</b:selectOneMenu>
+				
+				<b:commandButton value="Update" 
+					look="info"
+					action="#{editAlbumController.updateAlbum()}">
+				</b:commandButton>
+
+				<h:outputText value="  "/>
+				<a id="confirmLink" class="btn btn-danger" href="#confirmDialog" data-toggle="modal">Delete</a>
+				
+				<h:outputText value="  "/>
+				<b:commandButton value="Cancel"
+					immediate="true" 
+					action="#{editAlbumController.cancel()}">
+				</b:commandButton>	
+				
+			</h:form>
+		
+		</b:panel>
+		
+	</ui:define>
+
+</ui:composition>

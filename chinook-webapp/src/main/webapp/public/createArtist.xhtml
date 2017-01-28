@@ -1,0 +1,40 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:p="http://primefaces.org/ui"  
+	xmlns:b="http://bootsfaces.net/ui"
+	template="/WEB-INF/templates/template-chinook.xhtml">
+	
+	<ui:param name="title" value="Chinook - Create New Artist" />
+
+	<ui:define name="maincontent">
+		<b:jumbotron>
+			<h1>Enter New Artist Details</h1>
+		</b:jumbotron>
+		
+		<b:messages id="messages" />
+		
+		<h:form>
+			<b:inputText id="name" 
+				label="Artist Name"
+				value="#{createArtistController.currentArtist.name}">
+				<b:focus />
+			</b:inputText>
+			
+			<b:commandButton value="Submit" 	
+				look="primary"
+				action="#{createArtistController.createArtist()}">
+			</b:commandButton>
+		</h:form>
+				
+	</ui:define>
+
+</ui:composition>

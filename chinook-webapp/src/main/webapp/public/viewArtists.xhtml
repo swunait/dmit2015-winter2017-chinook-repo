@@ -1,0 +1,47 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:p="http://primefaces.org/ui"  
+	xmlns:b="http://bootsfaces.net/ui"
+	template="/WEB-INF/templates/template-chinook.xhtml">
+	
+	<ui:param name="title" value="Chinook - Artists" />
+
+	<ui:define name="maincontent">
+		<b:jumbotron>
+			<h1>Chinook - All Artists</h1>
+		</b:jumbotron>
+		
+		<b:messages id="messages" />
+		
+		<h:form>
+			<b:dataTable value="#{viewArtistsController.allArtists}" var="artist">
+				<b:dataTableColumn value="#{artist.artistId}">
+				</b:dataTableColumn>
+				
+				<b:dataTableColumn value="#{artist.name}">
+				</b:dataTableColumn>
+				
+				<b:dataTableColumn>
+					<f:facet name="header">
+						Action
+					</f:facet>					
+					<b:navLink value="edit" 
+						iconAwesome="edit" iconSize="2x" iconAlign="left"
+						outcome="/public/editArtist">
+						<f:param name="artistId" value="#{artist.artistId}" />
+					</b:navLink>
+				</b:dataTableColumn>
+			</b:dataTable>	
+		</h:form>
+	</ui:define>
+
+</ui:composition>
