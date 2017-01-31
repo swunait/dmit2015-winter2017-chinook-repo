@@ -25,4 +25,46 @@
   <welcome-file-list>
     <welcome-file>/index.xhtml</welcome-file>
   </welcome-file-list>
+  
+
+  <!-- Configure Authorization Rules -->
+  <security-constraint>
+  	<display-name>securityConstraint</display-name>
+  	<web-resource-collection>
+  		<web-resource-name>resources</web-resource-name>
+  		<url-pattern>/protected/*</url-pattern>
+  		<http-method>PUT</http-method>
+  		<http-method>DELETE</http-method>
+  		<http-method>GET</http-method>
+  		<http-method>POST</http-method>
+  	</web-resource-collection>
+  	<auth-constraint>
+  		<role-name>adminUserRole</role-name>
+  	</auth-constraint>
+  	<user-data-constraint>
+  		<!-- transport-guarantee: NONE, INTEGRAL, CONFIDENTIAL -->
+  		<!-- INTEGRAL - sent data cannot be changed from a third malicious party -->
+  		<!-- CONFIDENTAL - prevent other malicious thiry party from observing the contents of the transmission -->
+  		<!-- both INTEGRAL and CONFIDENTIALimply SSL -->
+  		<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+  	</user-data-constraint>
+  </security-constraint>
+  
+  <security-role>
+  	<role-name>adminUserRole</role-name>
+  </security-role>
+  
+  <!-- Configure Authentication Method for Container-Managed Security -->
+  <login-config>
+  	<!-- auth-method: NONE, BASIC, DIGEST, FORM -->
+  	<auth-method>FORM</auth-method>
+  	<realm-name>jdbcRealm</realm-name>
+  	<form-login-config>
+  		<form-login-page>/public/login.xhtml</form-login-page>
+  		<form-error-page>/public/login.xhtml?error</form-error-page>
+  	</form-login-config>
+  </login-config>
+  
+  
+  
 </web-app>
