@@ -1,0 +1,9 @@
+<security-domain name="jdbcRealm" cache-type="default">
+                    <authentication>
+                        <login-module code="Database" flag="required">
+                            <module-option name="dsJndiName" value="java:jboss/datasources/ChinookDS"/>
+                            <module-option name="principalsQuery" value="SELECT password FROM AppUser WHERE loginName = ?"/>
+                            <module-option name="rolesQuery" value="SELECT roleName, 'Roles' FROM AppUserRole WHERE loginName = ?"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
