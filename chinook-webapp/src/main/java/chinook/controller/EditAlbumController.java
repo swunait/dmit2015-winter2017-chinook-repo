@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJBAccessException;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -70,17 +71,18 @@ public class EditAlbumController implements Serializable {
 	}
 	
 	public String removeAlbum() {
-		String outcome = "/public/viewAlbums?faces-redirect=true";
+		String outcome = null;
 		try {
 			albumService.delete(currentAlbum);
 			currentAlbum = null;
 			Messages.addFlashGlobalInfo("Delete was successful.");
+			outcome = "/public/viewAlbums?faces-redirect=true";
+		} catch (EJBAccessException e) {
+			Messages.addGlobalError("You do not have permission to delete this item.");	
 		} catch (EJBTransactionRolledbackException e) {
 			Messages.addGlobalError("This item cannot be deleted.");
-			outcome = null;
 		} catch (Exception e) {
 			Messages.addGlobalError("Delete was not successful.");
-			outcome = null;
 		}
 		return outcome;
 	}

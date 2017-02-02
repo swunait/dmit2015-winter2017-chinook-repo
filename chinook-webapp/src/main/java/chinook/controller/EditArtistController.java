@@ -2,6 +2,7 @@ package chinook.controller;
 
 import java.io.Serializable;
 
+import javax.ejb.EJBAccessException;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -46,17 +47,18 @@ public class EditArtistController implements Serializable {
 	}
 	
 	public String removeArtist() {
-		String outcome = "/public/viewArtists?faces-redirect=true";
+		String outcome = null;
 		try {
 			artistService.delete(currentArtist);
 			currentArtist = null;
 			Messages.addFlashGlobalInfo("Delete was successful.");
+			outcome = "/public/viewArtists?faces-redirect=true";
+		} catch (EJBAccessException e) {
+			Messages.addGlobalError("You do not have permission to delete this item.");
 		} catch (EJBTransactionRolledbackException e) {
 			Messages.addGlobalError("This item cannot be deleted.");
-			outcome = null;
 		} catch (Exception e) {
 			Messages.addGlobalError("Delete was not successful.");
-			outcome = null;
 		}
 		return outcome;
 	}

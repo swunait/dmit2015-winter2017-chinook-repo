@@ -31,6 +31,7 @@
 
 <h:body style="padding: 60px;">
 	<b:navBar brand="DMIT2015 Chinook" brandHref="#{request.contextPath}/index.xhtml" fixed="top" inverse="true">
+       	<h:form>
     	<b:navbarLinks>
            <b:dropMenu value="Artist">
 	            <b:navLink value="New" outcome="/protected/createArtist"></b:navLink>
@@ -40,7 +41,9 @@
 	            <b:navLink value="New" outcome="/protected/createAlbum"></b:navLink>
 	            <b:navLink value="View All" outcome="/public/viewAlbums"></b:navLink>            
        		</b:dropMenu>
+       		<b:navCommandLink value="Logout #{sessionController.remoteUser}" action="#{sessionController.logout()}" rendered="#{sessionController.loggedIn}"></b:navCommandLink>
         </b:navbarLinks>
+     	</h:form>
         
         <b:navbarLinks pull="right">
 	        <h:form style="display:inline" styleClass="form-inline">

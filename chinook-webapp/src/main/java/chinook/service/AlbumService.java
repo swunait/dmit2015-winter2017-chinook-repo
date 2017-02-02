@@ -2,14 +2,20 @@ package chinook.service;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
+import org.jboss.ejb3.annotation.SecurityDomain;
+
 import chinook.entity.Album;;
 
 @Stateful
+@PermitAll
+@SecurityDomain("chinookRealm")
 public class AlbumService {
 
 	@PersistenceContext(type=PersistenceContextType.EXTENDED)
@@ -41,11 +47,13 @@ public class AlbumService {
 			.getResultList();
 	}
 	
+	@RolesAllowed({"adminUserRole","employeeUserRole"})
 	public void update(Album currentAlbum) {
 		entityManager.merge(currentAlbum);
 		entityManager.flush();
 	}
 	
+	@RolesAllowed({"adminUserRole"})
 	public void delete(Album currentAlbum) {
 		entityManager.remove(currentAlbum);
 	}

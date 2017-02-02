@@ -39,6 +39,7 @@
   		<http-method>POST</http-method>
   	</web-resource-collection>
   	<auth-constraint>
+  		<role-name>employeeUserRole</role-name>
   		<role-name>adminUserRole</role-name>
   	</auth-constraint>
   	<user-data-constraint>
@@ -51,6 +52,10 @@
   </security-constraint>
   
   <security-role>
+  	<role-name>employeeUserRole</role-name>
+  </security-role>
+  
+  <security-role>
   	<role-name>adminUserRole</role-name>
   </security-role>
   
@@ -58,7 +63,7 @@
   <login-config>
   	<!-- auth-method: NONE, BASIC, DIGEST, FORM -->
   	<auth-method>FORM</auth-method>
-  	<realm-name>jdbcRealm</realm-name>
+  	<realm-name>chinookRealm</realm-name>
   	<form-login-config>
   		<form-login-page>/public/login.xhtml</form-login-page>
   		<form-error-page>/public/login.xhtml?error</form-error-page>

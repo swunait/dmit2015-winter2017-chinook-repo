@@ -16,13 +16,39 @@
 	<ui:param name="title" value="Login Page" />
 
 	<ui:define name="maincontent">
-		<!-- Form Authentication -->
+		<!-- Form Authentication -->		
 		<form action="#{request.contextPath}/j_security_check" method="post">
-			Username: <input type="text" name="j_username"></input> <br />
-			Password: <input type="password" name="j_password"></input> <br />
-			<input type="submit" value="Login"></input>
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<div class="form-group has-feedback has-feedback-left">
+				<input type="text" name="j_username" class="form-control input-lg" placeholder="username"></input>
+				<i class="form-control-feedback glyphicon glyphicon-user"></i>
+			</div>
+			<div class="form-group">
+				<input type="password" name="j_password"  class="form-control input-lg" placeholder="password"></input>
+			</div>
+			<button type="submit" class="btn btn-primary btn-lg">
+				<span class="glyphicon glyphicon-log-in"></span>
+				Sign In
+			</button>
 		</form>
-				
+
+
+<!-- 
+		<form action="#{request.contextPath}/j_security_check" method="post" class="form-signin" name="loginForm">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <b:inputText id="j_username" name="j_username" placeholder="username" >
+                <f:facet name="prepend">
+                    <b:icon name="user" />
+                </f:facet>
+            </b:inputText>
+            <b:inputText id="j_password" name="j_password" placeholder="Password" type="password">
+                <f:facet name="prepend">
+                    <b:iconAwesome name="key" />
+                </f:facet>
+            </b:inputText>
+            <h:commandButton styleClass="btn btn-primary btn-block" value="Sign In" icon="log-in" size="lg" type="submit"/>
+        </form>
+-->				
 	</ui:define>
 
 </ui:composition>
