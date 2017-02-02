@@ -17,7 +17,7 @@
 
 	<ui:define name="maincontent">
 		<!-- Form Authentication -->
-		<form action="j_security_check" method="post">
+		<form action="#{request.contextPath}/j_security_check" method="post">
 			Username: <input type="text" name="j_username"></input> <br />
 			Password: <input type="password" name="j_password"></input> <br />
 			<input type="submit" value="Login"></input>
