@@ -55,19 +55,30 @@ public class EditAlbumController implements Serializable {
 	}
 
 	public String updateAlbum() {
+		String outcome = null;
 		if( selectedArtistId == null || selectedArtistId <= 0 ) {
 			Messages.addGlobalError("An valid artist must be selected");
 			return null;
 		}
-		// find the Artist of the currentAlbum
-		Artist selectedArtist = artistService.findOneById(selectedArtistId);
-		// set the Artist of the currentAlbum
-		currentAlbum.setArtist(selectedArtist);
-		albumService.update(currentAlbum);
-		currentAlbum = null;
-		Messages.addFlashGlobalInfo("Update was successful.");
-
-		return "/public/viewAlbums?faces-redirect=true";
+		
+		try {
+			// find the Artist of the currentAlbum
+			Artist selectedArtist = artistService.findOneById(selectedArtistId);
+			// set the Artist of the currentAlbum
+			currentAlbum.setArtist(selectedArtist);
+			albumService.update(currentAlbum);
+			currentAlbum = null;
+			Messages.addFlashGlobalInfo("Update was successful.");
+			outcome ="/public/viewAlbums?faces-redirect=true";
+		} catch (EJBAccessException e) {
+			Messages.addGlobalError("You do not have permission to update this item.");
+		} catch (EJBTransactionRolledbackException e) {
+			Messages.addGlobalError("This item cannot be updated.");
+		} catch (Exception e) {
+			Messages.addGlobalError("Update was not successful.");
+		}
+		
+		return outcome;
 	}
 	
 	public String removeAlbum() {

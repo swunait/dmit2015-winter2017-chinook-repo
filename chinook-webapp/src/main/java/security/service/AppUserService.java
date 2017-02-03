@@ -1,10 +1,7 @@
-package chinook.service;
+package security.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.Provider;
-import java.security.Security;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -13,9 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
-import chinook.entity.AppUser;
-import chinook.entity.AppUserRole;
-import chinook.entity.AppUserRolePK;
+import security.entity.*;
 
 @Stateful
 public class AppUserService {

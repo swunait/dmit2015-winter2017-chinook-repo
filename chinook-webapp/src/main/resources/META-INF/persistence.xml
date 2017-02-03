@@ -32,9 +32,9 @@
       <class>chinook.entity.MediaType</class>
       <class>chinook.entity.Playlist</class>
       <class>chinook.entity.Track</class>
-      <class>chinook.entity.AppUser</class>
-      <class>chinook.entity.AppUserRole</class>
-      <class>chinook.entity.AppUserRolePK</class>
+      <class>security.entity.AppUser</class>
+      <class>security.entity.AppUserRole</class>
+      <class>security.entity.AppUserRolePK</class>
       <properties>
          <!-- Properties for Hibernate -->
          <property name="hibernate.hbm2ddl.auto" value="update" />

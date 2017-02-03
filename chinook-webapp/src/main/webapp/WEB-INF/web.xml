@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>DMIT2015 Winter2017 Starter Project</display-name>
+  <display-name>DMIT2015 Winter2017 Assignment 1 Solution</display-name>
   <context-param>
     <param-name>javax.faces.PROJECT_STAGE</param-name>
     <param-value>Development</param-value>
@@ -39,8 +39,9 @@
   		<http-method>POST</http-method>
   	</web-resource-collection>
   	<auth-constraint>
-  		<role-name>employeeUserRole</role-name>
   		<role-name>adminUserRole</role-name>
+  		<role-name>employeeUserRole</role-name>
+  		<role-name>customerUserRole</role-name>
   	</auth-constraint>
   	<user-data-constraint>
   		<!-- transport-guarantee: NONE, INTEGRAL, CONFIDENTIAL -->
@@ -52,21 +53,26 @@
   </security-constraint>
   
   <security-role>
+  	<role-name>adminUserRole</role-name>
+  </security-role>
+  
+  <security-role>
   	<role-name>employeeUserRole</role-name>
   </security-role>
   
   <security-role>
-  	<role-name>adminUserRole</role-name>
+  	<role-name>customerUserRole</role-name>
   </security-role>
+  
   
   <!-- Configure Authentication Method for Container-Managed Security -->
   <login-config>
   	<!-- auth-method: NONE, BASIC, DIGEST, FORM -->
   	<auth-method>FORM</auth-method>
-  	<realm-name>chinookRealm</realm-name>
+  	<realm-name>chinookDomain</realm-name>
   	<form-login-config>
   		<form-login-page>/public/login.xhtml</form-login-page>
-  		<form-error-page>/public/login.xhtml?error</form-error-page>
+  		<form-error-page>/public/login.xhtml?error=true</form-error-page>
   	</form-login-config>
   </login-config>
   

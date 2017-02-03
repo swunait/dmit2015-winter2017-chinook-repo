@@ -1,4 +1,4 @@
-package chinook.entity;
+package security.entity;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;

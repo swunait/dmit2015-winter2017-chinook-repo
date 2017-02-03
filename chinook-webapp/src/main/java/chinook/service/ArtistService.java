@@ -15,7 +15,7 @@ import chinook.entity.Artist;;
 
 @Stateful
 @PermitAll
-@SecurityDomain("chinookRealm")
+@SecurityDomain("chinookDomain")
 public class ArtistService {
 
 	@PersistenceContext(type=PersistenceContextType.EXTENDED)

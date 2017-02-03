@@ -39,11 +39,20 @@ public class EditArtistController implements Serializable {
 	}
 
 	public String updateArtist() {
-		artistService.update(currentArtist);
-		currentArtist = null;
-		Messages.addFlashGlobalInfo("Updated was successful.");
-
-		return "/public/viewArtists?faces-redirect=true";
+		String outcome = null;
+		try {
+			artistService.update(currentArtist);
+			currentArtist = null;
+			Messages.addFlashGlobalInfo("Updated was successful.");
+			outcome = "/public/viewArtists?faces-redirect=true";
+		} catch (EJBAccessException e) {
+			Messages.addGlobalError("You do not have permission to update this item.");
+		} catch (EJBTransactionRolledbackException e) {
+			Messages.addGlobalError("This item cannot be updated.");
+		} catch (Exception e) {
+			Messages.addGlobalError("Update was not successful.");
+		}
+		return outcome;
 	}
 	
 	public String removeArtist() {

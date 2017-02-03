@@ -1,4 +1,4 @@
-package chinook.controller;
+package security.controller;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -17,6 +17,12 @@
 
 	<ui:define name="maincontent">
 		<!-- Form Authentication -->		
+		
+		<c:if test="#{not empty param.error}">
+			<b:alert severity="danger">Invalid login crendetials</b:alert>
+		</c:if>
+		
+		
 		<form action="#{request.contextPath}/j_security_check" method="post">
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<div class="form-group has-feedback has-feedback-left">

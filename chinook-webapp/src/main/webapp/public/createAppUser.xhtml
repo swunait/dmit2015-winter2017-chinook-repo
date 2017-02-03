@@ -23,23 +23,40 @@
 		<b:messages id="messages" />
 		
 		<h:form>
-			<b:inputText id="username" 
-				label="username"
-				value="">
+			<b:dataTable value="#{createAppUserController.allAppUsers}" var="user"
+				searching="false">
+				<b:dataTableColumn value="#{user.loginName}" />
+				<b:dataTableColumn value="#{user.password}" />
+				<b:dataTableColumn label="Roles">
+					<ui:repeat var="userRole" value="#{user.appUserRoles}">
+						#{userRole.id.roleName}
+					</ui:repeat>
+				</b:dataTableColumn>				
+			</b:dataTable>
+		
+			<b:inputText id="loginName" 
+				label="loginName"
+				value="#{createAppUserController.currentAppUser.loginName}">
 				<b:focus />
 			</b:inputText>
 			
 			<b:inputText id="password" 
 				label="password"
-				value=""
+				value="#{createAppUserController.password}"
 				type="password">
 			</b:inputText>
-			
-			
+						
+			<p>Role Name</p>
+			<b:radiobutton value="#{createAppUserController.selectedRoleName}">
+				<f:selectItems value="#{createAppUserController.appRoleNames}" var="roleName"
+					itemValue="#{roleName}" itemLabel="#{roleName}" />
+			</b:radiobutton>
+						
 			<b:commandButton value="Create User" 	
 				look="primary"
-				action="#">
+				actionListener="#{createAppUserController.createUser()}">
 			</b:commandButton>
+			
 		</h:form>
 				
 	</ui:define>

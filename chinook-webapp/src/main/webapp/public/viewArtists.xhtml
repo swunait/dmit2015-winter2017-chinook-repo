@@ -30,7 +30,7 @@
 				<b:dataTableColumn value="#{artist.name}">
 				</b:dataTableColumn>
 				
-				<b:dataTableColumn>
+				<b:dataTableColumn rendered="#{sessionController.loggedIn}">
 					<f:facet name="header">
 						Action
 					</f:facet>					

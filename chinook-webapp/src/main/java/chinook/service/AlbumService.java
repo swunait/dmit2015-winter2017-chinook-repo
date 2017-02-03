@@ -15,7 +15,7 @@ import chinook.entity.Album;;
 
 @Stateful
 @PermitAll
-@SecurityDomain("chinookRealm")
+@SecurityDomain("chinookDomain")
 public class AlbumService {
 
 	@PersistenceContext(type=PersistenceContextType.EXTENDED)

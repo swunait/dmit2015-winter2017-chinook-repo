@@ -1,9 +1,11 @@
-package chinook.entity;
+package security.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Embeddable
 public class AppUserRolePK implements Serializable {
@@ -11,6 +13,7 @@ public class AppUserRolePK implements Serializable {
 
 	@Column(insertable=false, updatable=false)
 	private String loginName;
+	@NotBlank(message="Role Name value is required")
 	private String roleName;
 	
 	
