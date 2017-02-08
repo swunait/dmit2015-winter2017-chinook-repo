@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJBAccessException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.jboss.logging.Logger;
 import org.omnifaces.util.Messages;
 
 import chinook.entity.Album;
@@ -20,6 +22,8 @@ import chinook.service.ArtistService;
 public class CreateAlbumController implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private static Logger log = Logger.getLogger(CreateAlbumController.class);
+	
 	@Inject
 	private AlbumService albumService;
 	@Inject
@@ -43,9 +47,18 @@ public class CreateAlbumController implements Serializable {
 		Artist selectedArtist = artistService.findOneById(selectedArtistId);
 		// set the Artist of the currentAlbum
 		currentAlbum.setArtist(selectedArtist);
-		albumService.add(currentAlbum);
-		currentAlbum = new Album();
-		Messages.addGlobalInfo("Successfully created new album");
+		
+		try {
+			albumService.add(currentAlbum);
+			currentAlbum = new Album();
+			Messages.addGlobalInfo("Successfully created new album");
+		} catch (EJBAccessException e) {
+			Messages.addGlobalError("You do not have permission to create this item.");
+			log.error(e.getMessage());
+		} catch (Exception e) {
+			Messages.addGlobalError("Failed to create item.");
+			log.error(e.getMessage());
+		}
 	}
 
 	public Album getCurrentAlbum() {

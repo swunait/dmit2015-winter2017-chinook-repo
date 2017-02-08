@@ -47,6 +47,7 @@ public class EditArtistController implements Serializable {
 			outcome = "/public/viewArtists?faces-redirect=true";
 		} catch (EJBAccessException e) {
 			Messages.addGlobalError("You do not have permission to update this item.");
+			currentArtist = artistService.findOneById(artistId);
 		} catch (EJBTransactionRolledbackException e) {
 			Messages.addGlobalError("This item cannot be updated.");
 		} catch (Exception e) {

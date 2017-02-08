@@ -2,6 +2,7 @@ package chinook.service;
 
 import java.util.List;
 
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
@@ -14,31 +15,36 @@ import org.jboss.ejb3.annotation.SecurityDomain;
 import chinook.entity.Album;;
 
 @Stateful
-@PermitAll
 @SecurityDomain("chinookDomain")
+@DeclareRoles({"adminUserRole","employeeUserRole","customerUserRole"})
 public class AlbumService {
 
 	@PersistenceContext(type=PersistenceContextType.EXTENDED)
 	private EntityManager entityManager;
 	
+	@RolesAllowed({"adminUserRole","employeeUserRole"})
 	public void add(Album currentAlbum) {
 		entityManager.persist(currentAlbum);
 	}
 	
+	@PermitAll
 	public Album findOneById(int albumId) {
 		return entityManager.find(Album.class, albumId);
 	}
 	
+	@PermitAll
 	@SuppressWarnings("unchecked")
 	public List<Album> findAll() {
 		return entityManager.createQuery("SELECT a FROM Album a").getResultList();
 	}
 	
+	@PermitAll
 	@SuppressWarnings("unchecked")
 	public List<Album> findAllOrderByTitle() {
 		return entityManager.createQuery("SELECT a FROM Album a ORDER by a.title").getResultList();
 	}
 	
+	@PermitAll
 	@SuppressWarnings("unchecked")
 	public List<Album> findAllByArtistId(int artistId) {
 		return entityManager.createQuery(
@@ -58,6 +64,7 @@ public class AlbumService {
 		entityManager.remove(currentAlbum);
 	}
 	
+	@RolesAllowed({"adminUserRole"})
 	public void delete(int albumId) {
 		Album currentAlbum = findOneById(albumId);
 		delete(currentAlbum);
