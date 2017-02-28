@@ -19,11 +19,16 @@
 		<b:jumbotron>
 			<h1>Genre Invoice Reports</h1>
 		</b:jumbotron>
-				
-		<p:chart type="pie" model="#{genreInvoiceReportController.genrePieModel}" style="height: 600px;" />
 		
-		<p:chart type="bar" model="#{genreInvoiceReportController.genreHorizontalBarModel}" 
-			style="height: 900px; " />
+		<div style="background-color: white;">
+			<p:chart type="pie" model="#{genreInvoiceReportController.genrePieModel}" 
+				style="height: 600px;" />		
+		</div>
+				
+		<div style="background-color: white;">
+			<p:chart type="bar" model="#{genreInvoiceReportController.genreHorizontalBarModel}" 
+				style="height: 900px; " />
+		</div>
 		
 	</ui:define>
 
