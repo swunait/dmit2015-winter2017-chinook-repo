@@ -18,6 +18,15 @@ public class AppUserService {
 	@PersistenceContext(type=PersistenceContextType.EXTENDED)
 	private EntityManager entityManager;
 	
+	public void update(AppUser appUser) {
+		entityManager.merge(appUser);
+		entityManager.flush();
+	}
+	
+	public AppUser findByUsername(String username) {
+		return entityManager.find(AppUser.class, username);
+	}
+	
 	public void add(AppUser currentUser, String roleName) throws NoSuchAlgorithmException {
 		String plainTextPassword = currentUser.getPassword();
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
