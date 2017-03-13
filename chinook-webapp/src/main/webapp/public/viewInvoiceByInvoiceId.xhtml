@@ -1,0 +1,135 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:p="http://primefaces.org/ui"  
+	xmlns:b="http://bootsfaces.net/ui"
+	template="/WEB-INF/templates/template-chinook.xhtml">
+	
+	<ui:param name="title" value="Chinook - View Invoice By InvoiceId" />
+
+	<ui:define name="maincontent">
+		<b:jumbotron>
+			<h1>View Invoice by InvoiceId</h1>
+		</b:jumbotron>
+		
+		<b:messages id="messages" />
+		
+		<b:form inline="true">
+			<b:inputText id="queryValue"
+				value="#{viewInvoiceByInvoiceIdController.queryValue}"
+				label="Invoice ID"
+				placeholder="enter invoice id to search for">
+				<b:focus />
+			</b:inputText>
+			
+			<b:commandButton value="Search"
+				look="primary"
+				ajax="true"
+				update="querySingleResultPanel :messages"
+				actionListener="#{viewInvoiceByInvoiceIdController.executeQuery}">
+			</b:commandButton>
+			
+			<p:outputPanel id="querySingleResultPanel">
+				<b:panel title="Invoice Details" rendered="#{not empty viewInvoiceByInvoiceIdController.querySingleResult}">
+					<b:row>
+						<b:column span="6">
+							<b:panel title="Customer Details" collapsible="false" style="height: 250px">
+								<strong>
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.customer.firstName} #{viewInvoiceByInvoiceIdController.querySingleResult.customer.lastName}" /> <br />									
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.customer.company}" /> <br />
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.customer.address}" /> <br />
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.customer.city}, #{viewInvoiceByInvoiceIdController.querySingleResult.customer.state}, #{viewInvoiceByInvoiceIdController.querySingleResult.customer.postalCode}" /> <br />
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.customer.country}" /> <br />		
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.customer.phone}" /> <br />													
+								</strong>
+							</b:panel>
+						</b:column>
+						<b:column span="6">						
+							<b:panel title="Invoice Details" collapsible="false" style="height: 250px">
+								<b:panelGrid colSpans="4,8">
+									<h:outputLabel value="CustomerId" />
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.customer.customerId}" />		
+									
+									<h:outputLabel value="InvoiceId" />
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.invoiceId}" />		
+									
+									<h:outputLabel value="Invoice Date" />
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.invoiceDate}">
+										<f:convertDateTime pattern="MMMM dd, yyyy"/>
+									</h:outputText>			
+									
+									<h:outputLabel value="Billing Address" />
+									<h:panelGroup>
+										<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.billingAddress}" /> 
+										<br />
+										<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.billingCity}" />
+										,
+										<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.billingState}" />
+										,
+										<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.billingPostalCode}" />	
+										<br />
+										<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.billingPostalCode}" />							
+									</h:panelGroup>
+												
+									<h:outputLabel value="Invoice Total" />
+									<h:outputText value="#{viewInvoiceByInvoiceIdController.querySingleResult.total}">
+										<f:convertNumber type="currency"/>
+									</h:outputText>							
+								</b:panelGrid>													
+							</b:panel>
+						</b:column>
+					</b:row>
+				
+					<br />
+					<b:dataTable id="invoiceLineTable"
+						value="#{viewInvoiceByInvoiceIdController.querySingleResult.invoiceLines}"
+						var="item"
+						rendered="true"
+						searching="false"
+						paginated="false">
+						
+						<b:dataTableColumn value="#{item.track.trackId}">
+						</b:dataTableColumn>
+
+						<b:dataTableColumn value="#{item.track.name}">
+						</b:dataTableColumn>
+						
+						<b:dataTableColumn value="#{item.quantity}" styleClass="text-right">
+						</b:dataTableColumn>
+						
+						<b:dataTableColumn styleClass="text-right">
+							<f:facet name="header">
+								Unit Price
+							</f:facet>
+							<h:outputText value="#{item.unitPrice}">
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</b:dataTableColumn>
+						
+						<b:dataTableColumn styleClass="text-right">
+							<f:facet name="header">
+								Item Total
+							</f:facet>
+							<h:outputText value="#{item.unitPrice * item.quantity}">
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</b:dataTableColumn>
+								
+					</b:dataTable>
+									
+				</b:panel>
+			
+			</p:outputPanel>
+		</b:form>
+				
+	</ui:define>
+
+</ui:composition>

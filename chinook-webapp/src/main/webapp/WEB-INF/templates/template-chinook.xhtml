@@ -41,6 +41,11 @@
 	            <b:navLink value="New" outcome="/protected/createAlbum"></b:navLink>
 	            <b:navLink value="View All" outcome="/public/viewAlbums"></b:navLink>            
        		</b:dropMenu>
+       		<b:dropMenu value="Invoice">
+	            <b:navLink value="View by InvoiceId" outcome="/public/viewInvoiceByInvoiceId"></b:navLink>
+	            <b:navLink value="View by Customer" outcome="/public/viewInvoiceByCustomer"></b:navLink>    
+	            <b:navLink value="View by Date Range" outcome="/public/viewInvoiceByDateRange"></b:navLink>             
+       		</b:dropMenu>
         </b:navbarLinks>
      	</h:form>
       
