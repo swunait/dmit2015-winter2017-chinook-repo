@@ -22,7 +22,173 @@
 		
 		<b:messages id="messages" />
 
-	
+		<b:form id="queryForm">
+			<b:row>
+				<b:column span="5">
+					<b:datepicker id="startDate"
+						label="Start Date"
+						value="#{viewInvoiceByDateRangeController.startDate}">
+					</b:datepicker>
+				</b:column>
+				<b:column span="5">
+					<b:datepicker id="endDate"
+						label="End Date"
+						value="#{viewInvoiceByDateRangeController.endDate}">
+					</b:datepicker>
+				</b:column>
+				<b:column span="1">
+					<b:commandButton value="Search"
+						look="primary"
+						ajax="true"
+						update="queryResultListPanel querySingleResultPanel :messages"
+						actionListener="#{viewInvoiceByDateRangeController.doSearch}">
+					</b:commandButton>
+				</b:column>
+			</b:row>
+			
+			<p:outputPanel id="queryResultListPanel">
+				<b:panel title="Invoices by Customer" rendered="#{not empty viewInvoiceByCustomerController.queryResultList}">
+					<b:dataTable id="queryResultListTable"
+						value="#{viewInvoiceByCustomerController.queryResultList}"
+						var="invoice"
+						searching="false"
+						paginated="false">
+						
+						<b:dataTableColumn value="#{invoice.invoiceId}" />
+						
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Invoice Date
+							</f:facet>
+							<h:outputText value="#{invoice.invoiceDate}">
+								<f:convertDateTime pattern="MMM d, yyyy"/>
+							</h:outputText>
+						</b:dataTableColumn>
+						
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Invoice Total
+							</f:facet>
+							<h:outputText value="#{invoice.total}">
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</b:dataTableColumn>
+						
+						<b:dataTableColumn styleClass="text-right">
+							<f:facet name="header">
+								Employee
+							</f:facet>
+							<h:outputText value="#{invoice.customer.employee.employee.firstName} #{invoice.customer.employee.lastName}">
+							</h:outputText>
+						</b:dataTableColumn>
+						
+						<b:dataTableColumn>
+							<f:facet name="header">
+								Action
+							</f:facet>
+							<b:commandButton value="view details" 
+								look="link"
+								actionListener="#{viewInvoiceByCustomerController.retreiveInvoiceByInvoiceId(invoice.invoiceId)}"
+								ajax="true" update=":querySingleResultPanel queryForm:queryResultListPanel">
+							</b:commandButton>
+						</b:dataTableColumn>
+					</b:dataTable>
+				</b:panel>
+			</p:outputPanel>
+			
+		</b:form>
+		
+		<p:outputPanel id="querySingleResultPanel">
+			<b:panel title="Invoice Details" rendered="#{not empty viewInvoiceByCustomerController.querySingleResult}">
+				<b:row>
+					<b:column span="6">
+						<b:panel title="Customer Details" collapsible="false" style="height: 250px">
+							<strong>
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.customer.firstName} #{viewInvoiceByCustomerController.querySingleResult.customer.lastName}" /> <br />									
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.customer.company}" /> <br />
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.customer.address}" /> <br />
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.customer.city}, #{viewInvoiceByCustomerController.querySingleResult.customer.state}, #{viewInvoiceByCustomerController.querySingleResult.customer.postalCode}" /> <br />
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.customer.country}" /> <br />		
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.customer.phone}" /> <br />													
+							</strong>
+						</b:panel>
+					</b:column>
+					<b:column span="6">						
+						<b:panel title="Invoice Details" collapsible="false" style="height: 250px">
+							<b:panelGrid colSpans="4,8">
+								<h:outputLabel value="CustomerId" />
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.customer.customerId}" />		
+								
+								<h:outputLabel value="InvoiceId" />
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.invoiceId}" />		
+								
+								<h:outputLabel value="Invoice Date" />
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.invoiceDate}">
+									<f:convertDateTime pattern="MMMM d, yyyy"/>
+								</h:outputText>			
+								
+								<h:outputLabel value="Billing Address" />
+								<h:panelGroup>
+									<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.billingAddress}" /> 
+									<br />
+									<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.billingCity}" />
+									,
+									<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.billingState}" />
+									,
+									<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.billingPostalCode}" />	
+									<br />
+									<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.billingPostalCode}" />							
+								</h:panelGroup>
+											
+								<h:outputLabel value="Invoice Total" />
+								<h:outputText value="#{viewInvoiceByCustomerController.querySingleResult.total}">
+									<f:convertNumber type="currency"/>
+								</h:outputText>							
+							</b:panelGrid>													
+						</b:panel>
+					</b:column>
+				</b:row>
+			
+				<br />
+				<b:dataTable id="invoiceLineTable"
+					value="#{viewInvoiceByCustomerController.querySingleResult.invoiceLines}"
+					var="item"
+					rendered="true"
+					searching="false"
+					paginated="false">
+					
+					<b:dataTableColumn value="#{item.track.trackId}">
+					</b:dataTableColumn>
+
+					<b:dataTableColumn value="#{item.track.name}">
+					</b:dataTableColumn>
+					
+					<b:dataTableColumn value="#{item.quantity}" styleClass="text-right">
+					</b:dataTableColumn>
+					
+					<b:dataTableColumn styleClass="text-right">
+						<f:facet name="header">
+							Unit Price
+						</f:facet>
+						<h:outputText value="#{item.unitPrice}">
+							<f:convertNumber type="currency"/>
+						</h:outputText>
+					</b:dataTableColumn>
+					
+					<b:dataTableColumn styleClass="text-right">
+						<f:facet name="header">
+							Item Total
+						</f:facet>
+						<h:outputText value="#{item.unitPrice * item.quantity}">
+							<f:convertNumber type="currency"/>
+						</h:outputText>
+					</b:dataTableColumn>
+							
+				</b:dataTable>
+								
+			</b:panel>
+		
+		</p:outputPanel>	
 				
 	</ui:define>
 

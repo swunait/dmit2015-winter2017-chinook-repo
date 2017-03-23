@@ -78,4 +78,49 @@ public class InvoiceLine implements Serializable {
 		this.track = track;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((invoice == null) ? 0 : invoice.hashCode());
+		result = prime * result + invoiceLineId;
+		result = prime * result + quantity;
+		result = prime * result + ((track == null) ? 0 : track.hashCode());
+		result = prime * result + ((unitPrice == null) ? 0 : unitPrice.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InvoiceLine other = (InvoiceLine) obj;
+		if (invoice == null) {
+			if (other.invoice != null)
+				return false;
+		} else if (!invoice.equals(other.invoice))
+			return false;
+		if (invoiceLineId != other.invoiceLineId)
+			return false;
+		if (quantity != other.quantity)
+			return false;
+		if (track == null) {
+			if (other.track != null)
+				return false;
+		} else if (!track.equals(other.track))
+			return false;
+		if (unitPrice == null) {
+			if (other.unitPrice != null)
+				return false;
+		} else if (!unitPrice.equals(other.unitPrice))
+			return false;
+		return true;
+	}
+	
+	
+
 }

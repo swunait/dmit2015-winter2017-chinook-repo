@@ -76,4 +76,22 @@ public class ViewInvoiceByCustomerController implements Serializable {
 		return querySingleResult;
 	}
 
+	public InvoiceService getInvoiceService() {
+		return invoiceService;
+	}
+
+	public void setInvoiceService(InvoiceService invoiceService) {
+		this.invoiceService = invoiceService;
+	}
+
+	public void setQueryResultList(List<Invoice> queryResultList) {
+		this.queryResultList = queryResultList;
+	}
+
+	public void setQuerySingleResult(Invoice querySingleResult) {
+		this.querySingleResult = querySingleResult;
+	}
+	
+	
+
 }
