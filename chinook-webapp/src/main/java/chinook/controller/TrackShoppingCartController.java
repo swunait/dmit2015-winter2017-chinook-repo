@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,8 +12,14 @@ import javax.validation.constraints.NotNull;
 
 import org.omnifaces.util.Messages;
 
+import chinook.entity.Customer;
+import chinook.entity.Invoice;
 import chinook.entity.InvoiceLine;
 import chinook.entity.Track;
+import chinook.exception.IllegalQuantityException;
+import chinook.exception.NoInvoiceLinesException;
+import chinook.service.CustomerService;
+import chinook.service.InvoiceService;
 import chinook.service.TrackService;
 
 @Named
@@ -27,6 +34,43 @@ public class TrackShoppingCartController implements Serializable {
 	
 	@Inject
 	private TrackService trackService;
+	
+	@Inject
+	private CustomerService customerService;
+	private List<Customer> customers;		// getter
+	private Integer selectedCustomerId;		// getter/setter
+	
+	@Inject
+	private InvoiceService invoiceService;
+	
+	@PostConstruct
+	public void init() {
+		customers = customerService.findAllOrderByLastnameFirstname();
+	}
+	
+	public void submitOrder() {
+		try {
+			int customerId = selectedCustomerId;
+			Customer invoiceCustomer = customerService.findOneByCustomerId(customerId);
+			Invoice newInvoice = new Invoice();
+			newInvoice.setCustomer(invoiceCustomer);
+			newInvoice.setBillingAddress(invoiceCustomer.getAddress());
+			newInvoice.setBillingCity(invoiceCustomer.getCity());
+			newInvoice.setBillingCountry(invoiceCustomer.getCompany());
+			newInvoice.setBillingPostalCode(invoiceCustomer.getPostalCode());
+			newInvoice.setBillingState(invoiceCustomer.getState());
+			
+			int invoiceId = invoiceService.create(newInvoice, invoiceLines);
+			Messages.addGlobalInfo("Successfully created invoice #{0}", invoiceId);
+			
+			// empty the shopping cart
+			invoiceLines.clear();			
+		} catch( NoInvoiceLinesException | IllegalQuantityException e ) {
+			Messages.addGlobalError(e.getMessage());
+		} catch( Exception e ) {
+			Messages.addGlobalError("Create invoice was not successful");
+		}
+	}
 	
 	public void add() {
 		Track currentTrack = trackService.findOneById(trackId);
@@ -75,5 +119,18 @@ public class TrackShoppingCartController implements Serializable {
 		return invoiceLines;
 	}
 
+	public Integer getSelectedCustomerId() {
+		return selectedCustomerId;
+	}
+
+	public void setSelectedCustomerId(Integer selectedCustomerId) {
+		this.selectedCustomerId = selectedCustomerId;
+	}
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
+	
 	
 }

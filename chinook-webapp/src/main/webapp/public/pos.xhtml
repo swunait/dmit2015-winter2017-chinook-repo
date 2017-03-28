@@ -75,6 +75,22 @@
 				</b:dataTableColumn>
 				
 			</b:dataTable>
+			
+			<b:selectOneMenu id="customers" value="#{trackShoppingCartController.selectedCustomerId}">
+				<f:selectItem itemValue="" itemLabel="Choose a customer" />
+				<f:selectItems value="#{trackShoppingCartController.customers}"
+					var="customer"
+					itemValue="#{customer.customerId}"
+					itemLabel="#{customer.lastName}, #{customer.firstName}" />				
+			</b:selectOneMenu>
+			
+			<b:commandButton value="Submit Invoice"
+				look="primary"
+				ajax="false" 
+				actionListener="#{trackShoppingCartController.submitOrder}">
+				
+			</b:commandButton>
+			
 		</b:form>
 				
 	</ui:define>
