@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js'></script>
+<title>View Artists</title>
+</head>
+<body>
+<div class="container">
+	<h2>ChinookDB - Artists</h2>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>ArtistId</th>
+				<th>Name</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody data-bind="foreach: artists">
+			<tr>
+				<td data-bind="text: artistId"></td>
+				<td ><input data-bind="value: name" /></td>
+				<td><a href="#" data-bind="click: $parent.removeArtist">delete</a>				
+					<a href="#" data-bind="click: $parent.updateArtist">update</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+function Artist(data) {
+	this.artistId = ko.observable(data.artistId);
+	this.name = ko.observable(data.name);
+}
+
+function ArtistListViewModel() {
+	var self = this;
+	self.artists = ko.observableArray([]);
+	
+	var chinookAPI = "/chinook-webapp/rest/webapi/artists";
+	$.getJSON(chinookAPI, function(allData) {
+		var mappedArtists = $.map(allData, function(item) {return new Artist(item); });
+		self.artists(mappedArtists);
+	});
+	
+	self.removeArtist = function(artist) { 
+		//alert(artist.name());
+		//self.artists.remove(artist);
+		//self.artists.destroy(artist); 
+		$.ajax(chinookAPI, {
+			data: ko.toJSON( artist.artistId() ),
+			type: "delete",
+			contentType: "application/json",
+			success: function(result) { 
+				self.artists.destroy(artist); 
+				//alert('Delete successful'); 
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert('Delete error');
+			}
+		});
+		//alert('delete done');
+	};
+	
+	self.updateArtist = function(artist) { 
+		$.ajax(chinookAPI, {
+			data: ko.toJSON( { artistId: artist.artistId(), name: artist.name() } ),
+			type: "PUT",
+			contentType: "application/json",
+			success: function(result) { 
+				alert('Update successful'); 
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert('Update error');
+			}
+		});
+	};
+}
+
+ko.applyBindings(new ArtistListViewModel());
+
+</script>
+</body>
+</html>

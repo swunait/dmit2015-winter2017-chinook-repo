@@ -39,8 +39,9 @@ public class ChinookWebAPI {
 	
 	@Path("artists")
 	@POST
-	public void createArtist(Artist currentArtist) {
+	public Artist createArtist(Artist currentArtist) {
 		artistService.add(currentArtist);
+		return currentArtist;
 	}
 	
 	@Path("artists")
