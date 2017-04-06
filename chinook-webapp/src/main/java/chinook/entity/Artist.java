@@ -2,6 +2,9 @@ package chinook.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -13,6 +16,7 @@ import java.util.List;
  * The persistent class for the Artist database table.
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @NamedQuery(name="Artist.findAll", query="SELECT a FROM Artist a")
 public class Artist implements Serializable {
@@ -27,6 +31,7 @@ public class Artist implements Serializable {
 	@Column(name="Name")
 	private String name;
 
+	@XmlTransient
 	//bi-directional many-to-one association to Album
 	@OneToMany(mappedBy="artist")
 	private List<Album> albums;
