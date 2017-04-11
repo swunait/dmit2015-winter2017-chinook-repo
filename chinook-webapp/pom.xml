@@ -220,6 +220,12 @@
 			<artifactId>jboss-ejb3-ext-api</artifactId>
 			<version>2.2.0.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson-provider</artifactId>
+			<version>3.1.2.Final</version>
+			<scope>provided</scope>
+		</dependency>
     </dependencies>
 
     <build>

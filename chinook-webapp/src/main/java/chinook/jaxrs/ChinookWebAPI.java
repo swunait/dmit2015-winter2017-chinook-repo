@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import chinook.entity.Artist;
 import chinook.service.ArtistService;
@@ -27,33 +28,40 @@ public class ChinookWebAPI {
 	
 	@Path("artists")
 	@GET
-	public List<Artist> findAllArtists() {
-		return artistService.findAllOrderByName();
+	public Response findAllArtists() {
+		return Response.ok( artistService.findAllOrderByName() ).build();
 	}
 	
 	@Path("artists/{id}")
 	@GET
-	public Artist findOneArtist(@PathParam("id") int artistId) {
-		return artistService.findOneById(artistId);
+	public Response findOneArtist(@PathParam("id") int artistId) {
+		Artist currentArtist = artistService.findOneById(artistId);
+		if ( currentArtist == null ) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		} else {
+			return Response.ok(currentArtist).build();
+		}
 	}
 	
 	@Path("artists")
 	@POST
-	public Artist createArtist(Artist currentArtist) {
+	public Response createArtist(Artist currentArtist) {
 		artistService.add(currentArtist);
-		return currentArtist;
+		return Response.ok(currentArtist).build();
 	}
 	
 	@Path("artists")
 	@PUT
-	public void updateArtist(Artist currentArtist) {
+	public Response updateArtist(Artist currentArtist) {
 		artistService.update(currentArtist);
+		return Response.ok().build();
 	}
 	
 	@Path("artists")
 	@DELETE
-	public void deleteArtist(int artistId) {
+	public Response deleteArtist(int artistId) {
 		artistService.delete(artistId);
+		return Response.ok().build();
 	}
 	
 }

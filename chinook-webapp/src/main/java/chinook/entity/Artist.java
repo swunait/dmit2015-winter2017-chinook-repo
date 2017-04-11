@@ -2,9 +2,9 @@ package chinook.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
+//import javax.xml.bind.annotation.XmlAccessorType;
+//import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -75,6 +75,11 @@ public class Artist implements Serializable {
 		album.setArtist(null);
 
 		return album;
+	}
+
+	@Override
+	public String toString() {
+		return "Artist [artistId=" + artistId + ", name=" + name + "]";
 	}
 
 }
