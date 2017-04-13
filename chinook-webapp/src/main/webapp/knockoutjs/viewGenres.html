@@ -31,6 +31,10 @@
 				<td>
 					<input data-bind="value: name" />
 				</td>
+				<td>
+					<a href="#" data-bind="click: $parent.deleteGenre">delete</a>
+					<a href="#" data-bind="click: $parent.updateGenre">update</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -38,8 +42,8 @@
 
 <script type="text/javascript">
 function Genre(data) {
-	this.genreId = data.genreId;
-	this.name = data.name;
+	this.genreId = ko.observable(data.genreId);
+	this.name = ko.observable(data.name);
 }
 
 function GenreListViewModel() {
@@ -48,9 +52,38 @@ function GenreListViewModel() {
 	
 	var chinookAPI = "/chinook-webapp/rest/webapi/genres";
 	$.getJSON(chinookAPI, function(allData) {
-		var mappedGenres = $.map(allData, function(item) {return new Genre(item); });
+		var mappedGenres = $.map(allData, function(item) {return new Genre(item);});
 		self.genres(mappedGenres);
 	});
+	
+	self.deleteGenre = function(currentGenre) {
+		var chinookAPI = "/chinook-webapp/rest/webapi/genres/" + currentGenre.genreId()
+		$.ajax(chinookAPI, {
+			type: "delete",
+			contentType: "application/json",
+			success: function(result) { 
+				self.genres.destroy(currentGenre);
+				alert('successfully deleted genre')
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert('error deleting genre')
+			}
+		});
+	}
+	
+	self.updateGenre = function(currentGenre) {
+		$.ajax(chinookAPI, {
+			data: ko.toJSON({ genreId: currentGenre.genreId(), name: currentGenre.name() }),
+			type: "PUT",
+			contentType: "application/json",
+			success: function(result) { 
+				//alert('successfully updated genre')
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert('error updating genre')
+			}
+		});
+	}
 	
 }
 
