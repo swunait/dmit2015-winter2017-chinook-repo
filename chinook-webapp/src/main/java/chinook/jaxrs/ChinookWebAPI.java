@@ -15,7 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import chinook.entity.Artist;
+import chinook.entity.Genre;
 import chinook.service.ArtistService;
+import chinook.service.GenreService;
 
 
 @Path("webapi")
@@ -25,6 +27,43 @@ public class ChinookWebAPI {
 
 	@Inject
 	private ArtistService artistService;
+	
+	@Inject
+	private GenreService genreService;
+	
+	@Path("genres")
+	@POST
+	public Response createGenre(Genre currentGenre) {
+		genreService.add(currentGenre);
+		return Response.ok().build();
+	}
+	
+	@Path("genres")
+	@GET
+	public Response findAllGenres() {		
+		return Response.ok( genreService.findAll() ).build();
+	}
+	@Path("genres/{id}")
+	@GET
+	public Response findOneGenre(@PathParam("id") int genreId) {
+		return Response.ok( genreService.findOneById(genreId) ).build();
+	}
+	
+	@Path("genres")
+	@PUT
+	public Response updateGenre(Genre currentGenre) {
+		genreService.update(currentGenre);
+		return Response.ok().build();
+	}
+	
+	@Path("genres/{id}")
+	@DELETE
+	public Response deleteGenre(@PathParam("id") int genreId) {
+		genreService.delete(genreId);
+		return Response.ok().build();
+	}
+	
+	
 	
 	@Path("artists")
 	@GET

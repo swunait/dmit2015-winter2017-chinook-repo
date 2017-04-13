@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js'></script>
+<title>View Genres</title>
+</head>
+<body>
+<div class="container">
+	<h2>ChinookDB - Genres</h2>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>GenreId</th>
+				<th>Name</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody data-bind="foreach: genres">
+			<tr>
+				<td data-bind="text: genreId"></td>
+				<td>
+					<input data-bind="value: name" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+function Genre(data) {
+	this.genreId = data.genreId;
+	this.name = data.name;
+}
+
+function GenreListViewModel() {
+	var self = this;
+	self.genres = ko.observableArray([]);
+	
+	var chinookAPI = "/chinook-webapp/rest/webapi/genres";
+	$.getJSON(chinookAPI, function(allData) {
+		var mappedGenres = $.map(allData, function(item) {return new Genre(item); });
+		self.genres(mappedGenres);
+	});
+	
+}
+
+ko.applyBindings(new GenreListViewModel());
+
+</script>
+</body>
+</html>
