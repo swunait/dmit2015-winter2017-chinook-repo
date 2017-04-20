@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -27,9 +28,10 @@ public class ChinookWebAPIClient {
 		}
 		// create a new artist
 		Artist newArtist = new Artist();
-		System.out.println("Enter artist name:");
-		Scanner keyboard = new Scanner(System.in);
-		String artistName = keyboard.nextLine();
+//		System.out.println("Enter artist name:");
+//		Scanner keyboard = new Scanner(System.in);
+//		String artistName = keyboard.nextLine();
+		String artistName = JOptionPane.showInputDialog("Enter artist name");
 		newArtist.setName(artistName);
 		Response response = artistResource.request().post( Entity.json( newArtist ) );
 		newArtist = response.readEntity(Artist.class);
@@ -44,8 +46,9 @@ public class ChinookWebAPIClient {
 		System.out.println( findOneArtist );
 		
 		// change the artist name
-		System.out.println("Enter name for artist: ");
-		String newArtistName = keyboard.nextLine();
+//		System.out.println("Enter name for artist: ");
+//		String newArtistName = keyboard.nextLine();
+		String newArtistName = JOptionPane.showInputDialog("Enter new artist name");
 		findOneArtist.setName(newArtistName);
 		Response updateResponse = artistResource.request().put( Entity.json(findOneArtist) );
 		updateResponse.close();
